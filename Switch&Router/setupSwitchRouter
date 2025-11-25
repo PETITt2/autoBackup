@@ -1,0 +1,45 @@
+! ---------------- Variables à modifier ----------------
+! Nom de l'équipement
+hostname Switch1
+! Mot de passe de l'utilisateur admin
+username admin privilege 15 secret admin
+! Mot de passe enable
+enable secret admin
+! Domaine pour SSH
+ip domain-name monreseau.local
+! Serveur NTP (optionnel)
+ntp server 192.168.100.1
+! ------------------------------------------------------
+
+configure terminal
+
+! Hostname et domaine
+hostname Switch1
+ip domain-name monreseau.local
+
+! Créer utilisateur admin avec privilège 15
+username admin privilege 15 secret admin
+
+! Enable secret
+enable secret admin
+
+! Générer les clés RSA pour SSH
+crypto key generate rsa modulus 2048
+
+! Activer SSH sur les lignes VTY
+line vty 0 4
+transport input ssh
+login local
+exit
+
+! Activer NTP (optionnel)
+ntp server 192.168.100.1
+
+exit
+
+! ---------------- Vérification ----------------
+show running-config | include hostname
+show running-config | include username
+show running-config | include ssh
+show ip interface brief
+show ssh
